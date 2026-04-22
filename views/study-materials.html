@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Materials - Smart Education System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><i class="fas fa-graduation-cap"></i> SmartEdu</div>
+            <ul class="sidebar-menu">
+                <li><a href="/student-dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="/online-classes.html"><i class="fas fa-video"></i> Online Classes</a></li>
+                <li><a href="/exams.html"><i class="fas fa-clipboard-check"></i> Exams & Tests</a></li>
+                <li><a href="/performance.html"><i class="fas fa-chart-pie"></i> Performance</a></li>
+                <li><a href="/study-materials.html" class="active"><i class="fas fa-book"></i> Study Materials</a></li>
+                <li><a href="/ai-assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Study Materials</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <input type="text" class="form-control" placeholder="Search materials..." style="width: 250px;">
+                    <select class="form-control" style="width: 150px;">
+                        <option value="">All Types</option>
+                        <option value="pdf">PDF Notes</option>
+                        <option value="video">Videos</option>
+                        <option value="paper">Previous Papers</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="materials-list">
+                <p style="text-align: center; padding: 2rem;">Loading materials...</p>
+            </div>
+        </main>
+    </div>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            SmartSys.checkAuth('student');
+            
+            try {
+                const materials = await SmartSys.apiCall('/materials');
+                const list = document.getElementById('materials-list');
+                
+                if (materials.length === 0) {
+                    list.innerHTML = '<p style="text-align: center; padding: 2rem;">No study materials available yet.</p>';
+                    return;
+                }
+
+                list.innerHTML = materials.map(m => `
+                    <div class="card glass" style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; gap: 1rem; align-items: center;">
+                            <i class="fas fa-file-${m.type === 'video' ? 'video' : 'pdf'}" style="font-size: 2rem; color: ${m.type === 'video' ? '#3b82f6' : '#ef4444'};"></i>
+                            <div>
+                                <h4 style="margin: 0;">${m.title}</h4>
+                                <p style="color: var(--text-light); font-size: 0.9rem; margin: 0;">Added by ${m.teacher_name || 'Teacher'}</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" style="padding: 0.5rem 1rem;"><i class="fas fa-download"></i> View</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

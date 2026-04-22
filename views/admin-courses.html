@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Courses - Smart Education System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><i class="fas fa-user-shield"></i> AdminPanel</div>
+            <ul class="sidebar-menu">
+                <li><a href="/admin-dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="/admin-students.html"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
+                <li><a href="/admin-teachers.html"><i class="fas fa-chalkboard-teacher"></i> Manage Teachers</a></li>
+                <li><a href="/admin-courses.html" class="active"><i class="fas fa-book"></i> Courses Overview</a></li>
+                <li><a href="/admin-settings.html"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Courses Overview</h2>
+                <button class="btn btn-primary"><i class="fas fa-plus"></i> Create Course</button>
+            </div>
+
+            <div class="card glass">
+                <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 1rem;">Course Code</th>
+                            <th style="padding: 1rem;">Course Name</th>
+                            <th style="padding: 1rem;">Instructor</th>
+                            <th style="padding: 1rem;">Enrolled</th>
+                            <th style="padding: 1rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courses-tbody">
+                        <tr><td colspan="5" style="padding: 1rem; text-align: center;">Loading courses...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            SmartSys.checkAuth('admin');
+            
+            try {
+                const courses = await SmartSys.apiCall('/courses');
+                const tbody = document.getElementById('courses-tbody');
+                
+                if (courses.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="padding: 1rem; text-align: center;">No courses found.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = courses.map(course => `
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;">${course.id}</td>
+                        <td style="padding: 1rem;">${course.title}</td>
+                        <td style="padding: 1rem;">ID: ${course.teacher_id || 'N/A'}</td>
+                        <td style="padding: 1rem;">N/A</td>
+                        <td style="padding: 1rem;">
+                            <button class="btn btn-outline" style="padding: 0.3rem 0.8rem; font-size: 0.9rem;">Manage</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

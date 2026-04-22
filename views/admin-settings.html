@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Settings - Smart Education System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><i class="fas fa-user-shield"></i> AdminPanel</div>
+            <ul class="sidebar-menu">
+                <li><a href="/admin-dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="/admin-students.html"><i class="fas fa-user-graduate"></i> Manage Students</a></li>
+                <li><a href="/admin-teachers.html"><i class="fas fa-chalkboard-teacher"></i> Manage Teachers</a></li>
+                <li><a href="/admin-courses.html"><i class="fas fa-book"></i> Courses Overview</a></li>
+                <li><a href="/admin-settings.html" class="active"><i class="fas fa-cog"></i> Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h2 style="margin-bottom: 2rem;">System Settings</h2>
+
+            <div class="card glass" style="max-width: 600px;">
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label>Platform Name</label>
+                        <input type="text" class="form-control" value="Smart Education System">
+                    </div>
+                    <div class="form-group">
+                        <label>Support Email</label>
+                        <input type="email" class="form-control" value="support@smartsys.com">
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 1rem;">
+                        <input type="checkbox" id="allowRegistration" checked>
+                        <label for="allowRegistration" style="margin: 0;">Allow New Registrations</label>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                        <input type="checkbox" id="maintenanceMode">
+                        <label for="maintenanceMode" style="margin: 0; color: #ef4444;">Enable Maintenance Mode</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => SmartSys.checkAuth('admin'));
+        document.getElementById('settingsForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            SmartSys.showToast('Settings saved successfully!', 'success');
+        });
+    </script>
+</body>
+</html>

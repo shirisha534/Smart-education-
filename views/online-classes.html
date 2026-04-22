@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Classes - Smart Education System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .class-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .class-card { display: flex; flex-direction: column; gap: 1rem; }
+        .class-image { height: 150px; background: #e2e8f0; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 3rem; color: var(--text-light); }
+        [data-theme="dark"] .class-image { background: #334155; }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo"><i class="fas fa-graduation-cap"></i> SmartEdu</div>
+            <ul class="sidebar-menu">
+                <li><a href="/student-dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="/online-classes.html" class="active"><i class="fas fa-video"></i> Online Classes</a></li>
+                <li><a href="/exams.html"><i class="fas fa-clipboard-check"></i> Exams & Tests</a></li>
+                <li><a href="/performance.html"><i class="fas fa-chart-pie"></i> Performance</a></li>
+                <li><a href="/study-materials.html"><i class="fas fa-book"></i> Study Materials</a></li>
+                <li><a href="/ai-assistant.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h2 style="margin-bottom: 2rem;">Online Classes</h2>
+            
+            <h3 style="margin-bottom: 1rem;">Live Now & Upcoming</h3>
+            <div class="class-grid" id="classes-list" style="margin-bottom: 3rem;">
+                <p style="text-align: center; width: 100%;">Loading classes...</p>
+            </div>
+        </main>
+    </div>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            SmartSys.checkAuth('student');
+            
+            try {
+                const classes = await SmartSys.apiCall('/classes');
+                const list = document.getElementById('classes-list');
+                
+                if (classes.length === 0) {
+                    list.innerHTML = '<p style="text-align: center; width: 100%;">No live classes scheduled.</p>';
+                    return;
+                }
+
+                list.innerHTML = classes.map(c => `
+                    <div class="card glass class-card">
+                        <div class="class-image" style="position: relative;">
+                            <i class="fas fa-video"></i>
+                            <span style="position: absolute; top: 10px; right: 10px; background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold;">${new Date(c.scheduled_time).toLocaleString()}</span>
+                        </div>
+                        <div>
+                            <h4>${c.title}</h4>
+                            <p style="color: var(--text-light); font-size: 0.9rem;">${c.teacher_name || 'Teacher'}</p>
+                        </div>
+                        <button class="btn btn-primary">Join Now</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students - Smart Education System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><i class="fas fa-graduation-cap"></i> SmartEdu</div>
+            <ul class="sidebar-menu">
+                <li><a href="/teacher-dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="/manage-students.html" class="active"><i class="fas fa-users"></i> Manage Students</a></li>
+                <li><a href="/upload-materials.html"><i class="fas fa-upload"></i> Upload Materials</a></li>
+                <li><a href="/create-exams.html"><i class="fas fa-file-alt"></i> Create Exams</a></li>
+                <li><a href="/teacher-classes.html"><i class="fas fa-video"></i> Live Classes</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2>Manage Students</h2>
+                <input type="text" class="form-control" placeholder="Search students..." style="width: 250px;">
+            </div>
+
+            <div class="card glass">
+                <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--border-color);">
+                            <th style="padding: 1rem;">ID</th>
+                            <th style="padding: 1rem;">Name</th>
+                            <th style="padding: 1rem;">Email</th>
+                            <th style="padding: 1rem;">Course</th>
+                            <th style="padding: 1rem;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="students-tbody">
+                        <tr><td colspan="5" style="padding: 1rem; text-align: center;">Loading students...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            SmartSys.checkAuth('teacher');
+            
+            try {
+                const students = await SmartSys.apiCall('/users/students');
+                const tbody = document.getElementById('students-tbody');
+                
+                if (students.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="padding: 1rem; text-align: center;">No students found.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = students.map(student => `
+                    <tr style="border-bottom: 1px solid var(--border-color);">
+                        <td style="padding: 1rem;">${student.id}</td>
+                        <td style="padding: 1rem;">${student.name}</td>
+                        <td style="padding: 1rem;">${student.email}</td>
+                        <td style="padding: 1rem;">N/A</td>
+                        <td style="padding: 1rem;">
+                            <button class="btn btn-outline" style="padding: 0.3rem 0.8rem; font-size: 0.9rem;">View</button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>

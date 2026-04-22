@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - Smart Education System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .chat-container { display: flex; flex-direction: column; height: calc(100vh - 8rem); }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+        .message { max-width: 80%; padding: 1rem; border-radius: var(--radius); line-height: 1.4; }
+        .message.bot { background: var(--bg-white); border: 1px solid var(--border-color); align-self: flex-start; border-bottom-left-radius: 0; }
+        .message.user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 0; }
+        .chat-input-area { display: flex; gap: 1rem; padding: 1.5rem; border-top: 1px solid var(--border-color); background: var(--bg-white); }
+        .chat-input-area input { flex: 1; padding: 1rem; border: 1px solid var(--border-color); border-radius: 30px; outline: none; background: var(--bg-light); color: var(--text-dark); }
+        .chat-input-area input:focus { border-color: var(--primary); }
+        .chat-btn { width: 50px; height: 50px; border-radius: 50%; background: var(--primary); color: white; border: none; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
+        .typing-indicator { display: none; align-items: center; gap: 4px; padding: 1rem; background: var(--bg-white); border-radius: var(--radius); width: fit-content; border: 1px solid var(--border-color);}
+        .dot { width: 8px; height: 8px; background: var(--text-light); border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><i class="fas fa-graduation-cap"></i> SmartEdu</div>
+            <ul class="sidebar-menu">
+                <li><a href="/student-dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="/online-classes.html"><i class="fas fa-video"></i> Online Classes</a></li>
+                <li><a href="/exams.html"><i class="fas fa-clipboard-check"></i> Exams & Tests</a></li>
+                <li><a href="/performance.html"><i class="fas fa-chart-pie"></i> Performance</a></li>
+                <li><a href="/study-materials.html"><i class="fas fa-book"></i> Study Materials</a></li>
+                <li><a href="/ai-assistant.html" class="active"><i class="fas fa-robot"></i> AI Assistant</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content" style="padding: 0;">
+            <div class="chat-container">
+                <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 1rem; background: var(--bg-white);">
+                    <div style="width: 40px; height: 40px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0;">SmartEdu AI</h3>
+                        <p style="color: var(--accent); font-size: 0.8rem;">● Online</p>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot">
+                        Hello! I'm your AI learning assistant. You can ask me to explain concepts, help with homework, or provide study tips. How can I help you today?
+                    </div>
+                    <div class="typing-indicator" id="typing-indicator">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                </div>
+
+                <form class="chat-input-area" id="chat-form">
+                    <input type="text" id="chat-input" placeholder="Type your doubt here..." required autocomplete="off">
+                    <button type="submit" class="chat-btn"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => SmartSys.checkAuth('student'));
+        const form = document.getElementById('chat-form');
+        const input = document.getElementById('chat-input');
+        const messagesContainer = document.getElementById('chat-messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const text = input.value.trim();
+            if (!text) return;
+
+            // Add User Message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.textContent = text;
+            messagesContainer.insertBefore(userMsg, typingIndicator);
+            input.value = '';
+
+            // Show Typing
+            typingIndicator.style.display = 'flex';
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Mock Bot Reply
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+                const botMsg = document.createElement('div');
+                botMsg.className = 'message bot';
+                botMsg.innerHTML = `This is a simulated AI response to: <strong>"${text}"</strong>. In a full implementation, this would connect to an AI model like Gemini to provide detailed educational explanations!`;
+                messagesContainer.insertBefore(botMsg, typingIndicator);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }, 1500);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Education System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 4rem 2rem;
+        }
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        .stats {
+            background-color: var(--primary);
+            color: white;
+            padding: 4rem 2rem;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            text-align: center;
+        }
+        .stat-item h3 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar glass">
+        <div class="nav-logo">
+            <i class="fas fa-graduation-cap"></i> SmartEdu
+        </div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="#features">Features</a>
+            <a href="/login.html" class="btn btn-outline">Login</a>
+            <a href="/register.html" class="btn btn-primary">Register</a>
+            <button id="theme-toggle" class="btn" style="background:transparent; color: var(--text-dark); font-size: 1.2rem;">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Learn Smarter with<br><span style="color: var(--primary);">AI Powered Education</span></h1>
+        <p>A global platform for schools, teachers, and students. Experience smart exams, AI chat assistance, and detailed progress tracking.</p>
+        <div class="hero-buttons">
+            <a href="/register.html" class="btn btn-primary">Get Started</a>
+            <a href="#courses" class="btn btn-outline">Explore Courses</a>
+        </div>
+    </header>
+
+    <section id="features" class="container">
+        <h2 style="text-align: center; margin-bottom: 3rem; font-size: 2.5rem;">Why Choose Us?</h2>
+        <div class="features">
+            <div class="card glass feature-card">
+                <i class="fas fa-robot feature-icon"></i>
+                <h3>AI Learning</h3>
+                <p style="color: var(--text-light); margin-top: 1rem;">Get instant homework help and doubt clearing with our AI Assistant.</p>
+            </div>
+            <div class="card glass feature-card">
+                <i class="fas fa-video feature-icon"></i>
+                <h3>Online Classes</h3>
+                <p style="color: var(--text-light); margin-top: 1rem;">Join live sessions and access recorded lectures seamlessly.</p>
+            </div>
+            <div class="card glass feature-card">
+                <i class="fas fa-clipboard-check feature-icon"></i>
+                <h3>Smart Exams</h3>
+                <p style="color: var(--text-light); margin-top: 1rem;">Auto-evaluated tests with instant results and detailed explanations.</p>
+            </div>
+            <div class="card glass feature-card">
+                <i class="fas fa-chart-line feature-icon"></i>
+                <h3>Progress Tracking</h3>
+                <p style="color: var(--text-light); margin-top: 1rem;">In-depth analytics on strengths, weaknesses, and weekly growth.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat-item">
+            <h3>50K+</h3>
+            <p>Total Students</p>
+        </div>
+        <div class="stat-item">
+            <h3>2,000+</h3>
+            <p>Expert Teachers</p>
+        </div>
+        <div class="stat-item">
+            <h3>1,500+</h3>
+            <p>Active Courses</p>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 2rem; background: var(--bg-white); border-top: 1px solid var(--border-color); margin-top: auto;">
+        <p style="color: var(--text-light);">&copy; 2026 Smart Education System. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

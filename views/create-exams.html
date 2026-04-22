@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Exams - Smart Education System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><i class="fas fa-graduation-cap"></i> SmartEdu</div>
+            <ul class="sidebar-menu">
+                <li><a href="/teacher-dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="/manage-students.html"><i class="fas fa-users"></i> Manage Students</a></li>
+                <li><a href="/upload-materials.html"><i class="fas fa-upload"></i> Upload Materials</a></li>
+                <li><a href="/create-exams.html" class="active"><i class="fas fa-file-alt"></i> Create Exams</a></li>
+                <li><a href="/teacher-classes.html"><i class="fas fa-video"></i> Live Classes</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h2 style="margin-bottom: 2rem;">Create New Exam</h2>
+
+            <div class="card glass" style="max-width: 800px;">
+                <form id="examForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label>Exam Title</label>
+                            <input type="text" class="form-control" required placeholder="e.g. Midterm Test">
+                        </div>
+                        <div class="form-group">
+                            <label>Course</label>
+                            <select class="form-control" required>
+                                <option value="physics">Physics</option>
+                                <option value="math">Mathematics</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration (Minutes)</label>
+                            <input type="number" class="form-control" required placeholder="60">
+                        </div>
+                        <div class="form-group">
+                            <label>Total Marks</label>
+                            <input type="number" class="form-control" required placeholder="100">
+                        </div>
+                    </div>
+                    
+                    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+
+                    <h3>Questions</h3>
+                    <div id="questionsContainer">
+                        <div class="card" style="margin-bottom: 1rem; border: 1px solid var(--border-color); box-shadow: none;">
+                            <div class="form-group">
+                                <label>Question 1</label>
+                                <input type="text" class="form-control" required placeholder="Enter question text">
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div><input type="text" class="form-control" required placeholder="Option A"></div>
+                                <div><input type="text" class="form-control" required placeholder="Option B"></div>
+                                <div><input type="text" class="form-control" required placeholder="Option C"></div>
+                                <div><input type="text" class="form-control" required placeholder="Option D"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+                        <button type="button" class="btn btn-outline" onclick="SmartSys.showToast('Added another question block', 'success')"><i class="fas fa-plus"></i> Add Question</button>
+                        <button type="submit" class="btn btn-primary">Publish Exam</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => SmartSys.checkAuth('teacher'));
+        document.getElementById('examForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.querySelector('input[type="text"]').value;
+            const course_id = document.querySelector('select').value;
+            const total_marks = document.querySelectorAll('input[type="number"]')[1].value;
+
+            try {
+                await SmartSys.apiCall('/exams', {
+                    method: 'POST',
+                    body: JSON.stringify({ title, course_id, total_marks })
+                });
+                SmartSys.showToast('Exam created successfully!', 'success');
+                setTimeout(() => window.location.href = '/teacher-dashboard.html', 1500);
+            } catch (err) {}
+        });
+    </script>
+</body>
+</html>

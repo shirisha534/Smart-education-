@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Materials - Smart Education System</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><i class="fas fa-graduation-cap"></i> SmartEdu</div>
+            <ul class="sidebar-menu">
+                <li><a href="/teacher-dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="/manage-students.html"><i class="fas fa-users"></i> Manage Students</a></li>
+                <li><a href="/upload-materials.html" class="active"><i class="fas fa-upload"></i> Upload Materials</a></li>
+                <li><a href="/create-exams.html"><i class="fas fa-file-alt"></i> Create Exams</a></li>
+                <li><a href="/teacher-classes.html"><i class="fas fa-video"></i> Live Classes</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h2 style="margin-bottom: 2rem;">Upload Study Materials</h2>
+
+            <div class="card glass" style="max-width: 600px;">
+                <form id="uploadForm">
+                    <div class="form-group">
+                        <label>Material Title</label>
+                        <input type="text" class="form-control" required placeholder="e.g. Chapter 1 Notes">
+                    </div>
+                    <div class="form-group">
+                        <label>Select Course</label>
+                        <select class="form-control" required>
+                            <option value="">Select a course...</option>
+                            <option value="physics">Physics</option>
+                            <option value="math">Mathematics</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Material Type</label>
+                        <select class="form-control" required>
+                            <option value="pdf">PDF Document</option>
+                            <option value="video">Video Lecture</option>
+                            <option value="paper">Previous Exam Paper</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>File</label>
+                        <input type="file" id="materialFile" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Upload Material</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => SmartSys.checkAuth('teacher'));
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.querySelector('input[type="text"]').value;
+            const type = document.querySelectorAll('select')[1].value;
+            const course_id = document.querySelectorAll('select')[0].value;
+            
+            try {
+                await SmartSys.apiCall('/materials', {
+                    method: 'POST',
+                    body: JSON.stringify({ title, type, course_id, file_url: 'dummy_url.pdf' })
+                });
+                SmartSys.showToast('Material uploaded successfully!', 'success');
+                e.target.reset();
+            } catch (err) {}
+        });
+    </script>
+</body>
+</html>
